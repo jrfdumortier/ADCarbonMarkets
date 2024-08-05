@@ -56,7 +56,10 @@ ui        = fluidPage(
                          "energy prices in your state over the period 2017-2021. The upper and",
                          "lower whiskers indicate the IRR in the case of minimum and maximum",
                          "energy prices observed over the time period.",
-                         plotOutput("irr"))))
+                         plotOutput("irr"),
+                         "The graph below shows the composition of revenue from energy sales,",
+                         "digestate sale, and carbon payments.",
+                         plotOutput("annualrevenue"))))
 #--------------------------------------------------------------------------------------------------
 server    = function(input,output){
                load("DSTData.RData",envir=.GlobalEnv)
@@ -77,6 +80,15 @@ server    = function(input,output){
                          ylab("Annual Profit in US Dollars")+
                          geom_bar(stat="identity",color="black",position=position_dodge())+
                          theme(legend.title=element_blank(),axis.title.x=element_blank())+
+                         scale_fill_brewer(palette="Paired")
+               })
+               output$annualrevenue     = renderPlot({
+                    df                  = aduse()
+                    ggplot(df[[8]],aes(x=scenario,y=value/1000,fill=item))+theme_bw(base_size=15)+
+                         ylab("Annual Revenue in 1,000 US Dollars")+
+                         geom_bar(stat="identity",color="black")+facet_wrap(vars(use))+
+                         theme(legend.title=element_blank(),axis.title.x=element_blank(),
+                               axis.text.x=element_text(angle=45,hjust=1))+
                          scale_fill_brewer(palette="Paired")
                })
                output$irr               = renderPlot({
