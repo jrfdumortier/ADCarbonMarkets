@@ -1,0 +1,4 @@
+FinCal
+ggplot2
+shiny
+reshape2
