@@ -39,7 +39,11 @@ ui        = fluidPage(
                                                "South Carolina","South Dakota","Tennessee",
                                                "Texas","Utah","Vermont","Virginia","Washington",
                                                "West Virginia","Wisconsin","Wyoming"),
-                                     selected="Iowa")),
+                                     selected="Iowa"),
+                         tags$div(
+                              style = "margin-top: 12px; color: #666;",
+                              strong("Version: "),
+                              textOutput("version", inline = TRUE))),
                     mainPanel(
                          h4("Greenhouse Gas Emissions and Revenue"),
                          "Based on your farm characteristics, you avoid on an annual basis",
@@ -63,6 +67,7 @@ ui        = fluidPage(
 #--------------------------------------------------------------------------------------------------
 server    = function(input,output){
                load("DSTData.RData",envir=.GlobalEnv)
+               output$version = renderText({as.character(version)})
                aduse = reactive({funirr(input$head,input$pcarbon,input$state,input$mms,
                                         input$farmtype,input$codigestate,input$costshare)})
                output$emissionreduction = renderText({
