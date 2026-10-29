@@ -1,7 +1,6 @@
-library(FinCal)
 library(ggplot2)
-library(shiny)
 library(reshape2)
+library(shiny)
 #--------------------------------------------------------------------------------------------------
 ui        = fluidPage(
                titlePanel("Anaerobic Digestion and Carbon Markets"),
@@ -28,7 +27,7 @@ ui        = fluidPage(
                                       choices=c("Corn Stover","Wheat Straw")),
                          selectInput("state",h3("Select State"),
                                      choices=c("Alabama","Arizona","Arkansas","California",
-                                               "Colorado","COnnecticut","Delaware","Florida",
+                                               "Colorado","Connecticut","Delaware","Florida",
                                                "Georgia","Idaho","Illinois","Indiana","Iowa",
                                                "Kansas","Kentucky","Louisiana","Maine","Maryland",
                                                "Massachusetts","Michigan","Minnesota",
@@ -68,8 +67,9 @@ ui        = fluidPage(
 server    = function(input,output){
                load("DSTData.RData",envir=.GlobalEnv)
                output$version = renderText({as.character(version)})
-               aduse = reactive({funirr(input$head,input$pcarbon,input$state,input$mms,
-                                        input$farmtype,input$codigestate,input$costshare)})
+               aduse = reactive({req(input$head); funirr(input$head,input$pcarbon,input$state,
+                                                         input$mms,input$farmtype,
+                                                         input$codigestate,input$costshare)})
                output$emissionreduction = renderText({
                     value               = aduse()
                     value               = paste(round(value[[2]],0),
